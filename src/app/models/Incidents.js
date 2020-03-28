@@ -5,6 +5,12 @@ class Incidents {
     return await connection("incidents").select("*");
   }
 
+  async findAllIncidentsOng(ong_id) {
+    return await connection("incidents")
+      .select("*")
+      .where("ong_id", ong_id);
+  }
+
   async findIncident(colunms, id) {
     return await connection("incidents")
       .where("id", "=", id)
