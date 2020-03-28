@@ -2,8 +2,27 @@ const Incidents = require("../models/Incidents");
 
 class IncidentsController {
   async index(req, res) {
-    const incidents = await Incidents.listAllIncidents();
-    return res.json(incidents);
+    const { page = 1, limit = 10 } = req.query;
+    const offset = page <= 1 ? 0 : (page - 1) * limit;
+
+    const incidents = await Incidents.listAllIncidents(limit, offset);
+    const [totalIncidents] = await Incidents.totalAllIncidents();
+
+    const totalPages = Math.ceil(totalIncidents.count / limit);
+    const nextPage =
+      parseInt(page) + 1 <= totalPages ? parseInt(page) + 1 : null;
+    const previousPage = parseInt(page) - 1 >= 1 ? parseInt(page) - 1 : null;
+
+    const responseData = {
+      correntPage: parseInt(page),
+      total: parseInt(totalIncidents.count),
+      totalPages: totalPages,
+      nextPage,
+      previousPage,
+      incidents
+    };
+
+    return res.json(responseData);
   }
 
   async store(req, res) {

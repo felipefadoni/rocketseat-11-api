@@ -1,8 +1,23 @@
 const connection = require("../../database/connection");
 
 class Incidents {
-  async listAllIncidents() {
-    return await connection("incidents").select("*");
+  async listAllIncidents(limit, offset) {
+    return await connection("incidents")
+      .join("ongs", "ongs.id", "=", "incidents.ong_id")
+      .select([
+        "incidents.*",
+        "ongs.name",
+        "ongs.email",
+        "ongs.whatsapp",
+        "ongs.city",
+        "ongs.uf"
+      ])
+      .limit(limit)
+      .offset(offset);
+  }
+
+  async totalAllIncidents() {
+    return await connection("incidents").count();
   }
 
   async findAllIncidentsOng(ong_id) {
