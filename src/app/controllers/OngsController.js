@@ -21,17 +21,17 @@ class OngsController {
       if (error.constraint === "ongs_email_unique")
         return res
           .status(400)
-          .json({ message: "O E-mail informado já está cadastrado." });
+          .json({ msgError: "O E-mail informado já está cadastrado." });
 
       if (error.constraint === "ongs_whatsapp_unique")
         return res
           .status(400)
-          .json({ message: "O Whatsapp informado já está cadastrado." });
+          .json({ msgError: "O Whatsapp informado já está cadastrado." });
 
       return res.status(400).json({
-        message:
+        msgError:
           "Ocorreu um problema ao salvar, entre em contato com o suporte técnico.",
-        error
+        errorData: JSON.stringify(error)
       });
     }
   }
