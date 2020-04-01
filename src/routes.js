@@ -1,7 +1,5 @@
 const express = require("express");
 
-const { celebrate, Segments, Joi } = require("celebrate");
-
 const ValidatorRoutes = require("./app/validators/ValidatorsRoutes");
 
 const routes = express.Router();
